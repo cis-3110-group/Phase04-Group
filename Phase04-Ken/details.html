@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="phase04.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" 
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+        crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>    
+    <title>Details Page</title>
+</head>
+<body>
+    <button id="backButton" class="btn btn-success">Go Back</button>
+    <div id="detailImage" class="box"></div>
+
+    <script>
+        //setting up the back button
+        document.getElementById("backButton").onclick = function () {
+            window.location.href="index.html";
+        };
+
+        //searches for a string and returns the matching pair of the URL
+        function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0; i<vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable) {
+                    pair[1] = pair[1].replace(/%20/g, " ");
+                    return pair[1];
+                }
+            }
+            return(false);
+        };
+
+        //reads cookie to see if its a favorite
+        var picURL = getQueryVariable("pic");
+        var imageNumber = picURL.match(/\d+/);
+        var cookieNumber = readCookie("image"+imageNumber);
+        if (picURL === cookieNumber) {
+            $("#detailImage").addClass("favorite");
+            $("<i></i>").attr("class","fas fa-star").appendTo("#detailImage");
+        }
+
+        //creates the p tag with the title and adds it to the DOM
+        var captionURL = getQueryVariable("caption");
+        var pCaption = document.createElement("p");
+        pCaption.setAttribute("id","caption");
+        pCaption.innerText = captionURL;
+        document.getElementById("detailImage").appendChild(pCaption);
+
+        //creates img and adds the picture to the DOM
+        var image = document.createElement("img");
+        image.setAttribute("src", picURL);
+        image.setAttribute("id","picture");
+        image.setAttribute("class","picture");
+        document.getElementById("detailImage").appendChild(image);
+        
+        //creates a p tag and adds it to the DOM
+        var detailsURL = getQueryVariable("details");
+        var p = document.createElement("p");
+        p.innerText = detailsURL;
+        document.getElementById("detailImage").appendChild(p);
+
+        //cookie functions
+        function createCookie(name,value,days) {
+        if (days) {
+            var date = new Date();
+            date.setTime(date.getTime()+(days*24*60*60*1000));
+            var expires = "; expires="+date.toGMTString();
+        }
+        else var expires = "";
+        document.cookie = name+"="+value+expires+"; path=/";
+        }
+
+        function readCookie(name) {
+            var nameEQ = name + "=";
+            var ca = document.cookie.split(';');
+            for(var i=0;i < ca.length;i++) {
+                var c = ca[i];
+                while (c.charAt(0)==' ') c = c.substring(1,c.length);
+                if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+            }
+            return null;
+        }
+
+        function eraseCookie(name) {
+            createCookie(name,"",-1);
+        }
+    </script>
+</body>
+</html>

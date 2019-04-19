@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="phase04.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" 
+    integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" 
+    crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+        crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <title>Phase 04</title>
+</head>
+<body>
+    <header>
+        <h1>Ken Kawaguchi</h1>
+        <h2><a href="https://github.com/ktkawaguchi/Phase04">MyGitHub</a></h2>
+        <h3>Bootstrap Components: Buttons, Tooltips and Modals</h3>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            View My Group Members!
+        </button>
+    </header>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">My Awesome Group!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <p>Gabrielle La Madrid</p>
+                <p>Linda Ly</p>
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+    <div id="picture" class="containMe"></div>
+    
+</body>
+
+<script>
+$(document).ready(function(){
+    var picURL = ["1.jpg","2.jpg","3.jpg","4.jpg","5.jpg","6.jpg"];
+    var picCaption = ["Classic Civic","Another Civic","Different Color","Another Another Civic",
+                        "One More", "Okay Last One"];
+    var picDesc = ["Showstopper, well maintained.", "A car that no one wanted.",
+                        "A car that was well loved but ultimately broke.", "Neither wanted or needed but existed anyway.",
+                        "Fun for long drives.", "I could never afford this piece of art."];
+
+    //iterates over the picture arrays and adds them to the DOM
+    for (var i = 1; i <= picURL.length; i++){
+
+        //creates a div to contain each picture and caption
+        var newDiv = document.createElement("div");
+        newDiv.setAttribute("id","container" + i);
+        newDiv.setAttribute("class","box");
+        document.getElementById("picture").appendChild(newDiv);
+
+        //creates the URL for the details of the image
+        var url = "details.html?pic=" +  picURL[i-1] + 
+        "&caption=" + picCaption[i-1] + "&details=" + picDesc[i-1];
+        console.log("theurl: " + url);
+
+        //creates the a tag and adds the details page URL to it
+        var a = document.createElement("a");
+        a.setAttribute("href",url);
+        a.setAttribute("id","imageLink" + i);
+        document.getElementById("container"+i).appendChild(a);
+
+        //creates the image and adds it to the div container
+        var image = document.createElement("img");
+        image.setAttribute("src", picURL[i-1]);
+        image.setAttribute("id","picture" + i);
+        image.setAttribute("class","picture");
+        document.getElementById("imageLink"+i).appendChild(image);
+
+        //creates the caption and adds it to the div container
+        var caption = document.createElement("p");
+        caption.innerHTML = picCaption[i-1];
+        caption.setAttribute("id", "caption" + i);
+        document.getElementById("container"+i).appendChild(caption);
+
+        //creates buttons and adds it to the div container
+        if (readCookie("image"+i)) {
+            var activateUnFav = true;
+            $("#container"+i).css("background-color","orange");
+            $("<i></i>").attr("class","fas fa-star").appendTo("#container"+i);
+        } else {
+            $("<button>Make Favorite</button>").attr({
+                "id":"favBtn"+i,
+                "type": "button",
+                "class" : "btn btn-success btn-lg",
+                "data-toggle": "tooltip",
+                "title": "Make this car a favorite!",
+                }).on("click",function(){
+                    var btnNumber = this.id.match(/\d+/);
+                    $(this).attr("disabled",true);
+                    $("#unFavBtn"+btnNumber).attr("disabled",false);
+                    createCookie("image"+btnNumber,btnNumber+".jpg",1);
+                    document.getElementById("imageLink"+btnNumber).click();
+            }).appendTo("#container"+i);
+        }
+
+        $("<button>Unfavorite</button>").attr({
+            "id":"unFavBtn"+i,
+            "type": "button",
+            "class": "btn btn-danger btn-lg",
+            "data-toggle": "tooltip",
+            "title": "Unfavorite this car.",
+            "disabled": true
+            }).on("click",function(){
+                var btnNumber = this.id.match(/\d+/);
+                $(this).attr("disabled",true);
+                $("#favBtn"+btnNumber).attr("disabled",false);
+                eraseCookie("image"+btnNumber);
+                location.reload();
+        }).appendTo("#container"+i);
+        if (activateUnFav) {
+            $("#unFavBtn"+i).attr("disabled",false);
+            console.log("value of i " +i );
+        }
+    }
+
+    //cookie functions
+    function createCookie(name,value,days) {
+	if (days) {
+		var date = new Date();
+		date.setTime(date.getTime()+(days*24*60*60*1000));
+		var expires = "; expires="+date.toGMTString();
+	}
+	else var expires = "";
+	document.cookie = name+"="+value+expires+"; path=/";
+    }
+
+    function readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0;i < ca.length;i++) {
+            var c = ca[i];
+            while (c.charAt(0)==' ') c = c.substring(1,c.length);
+            if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        }
+        return null;
+    }
+
+    function eraseCookie(name) {
+        createCookie(name,"",-1);
+    }
+});
+</script>
+</html>
