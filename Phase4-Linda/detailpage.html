@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script>
+    $( function() {
+      $("#u").click(function(){
+        var h = "phase3-start.html";
+        console.log(h);
+        window.location.href = h;
+      });
+
+      var url = window.location.href;
+      console.log("url = " + url);
+      var x = breakUpURLParameters(url);
+      console.log(x.search);
+      console.log("img url  = " + x.search.img);
+      console.log("title = " + x.search.title);      
+      console.log("description = " + x.search.description);
+      var t = document.getElementById("effectDiv");
+      var y = document.createElement("img");
+      y.setAttribute("src", x.search.img); 
+      y.setAttribute("class", "picImg"); 
+      t.appendChild(y);
+
+      var titleInDiv = document.createElement("p");
+      titleInDiv.innerHTML = x.search.title;
+      document.body.appendChild(titleInDiv);
+
+      var description = document.createElement("p");
+      description.innerHTML = x.search.description;
+      document.body.appendChild(description);
+
+      var icon = document.createElement("i");
+      icon.setAttribute("class", "fa fa-heart");
+
+      var showCookie = document.createElement("button");
+      showCookie.innerHTML = "show cookie";
+      document.body.appendChild(showCookie);
+      showCookie.addEventListener("click", function()
+      {
+        alert(document.cookie + x.search.title+".jpg");
+
+      });
+
+      for(var i=0;i<6;i++)
+      {
+        if (getCookie(i)== x.search.title+".jpg")
+        {
+          document.body.appendChild(icon);
+        }
+
+      }
+
+      function setCookie(cname,cvalue,exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays*24*60*60*1000));
+        var expires = "expires=" + d.toGMTString();
+        document.cookie = cname+"="+cvalue+"; "+expires;
+      }
+
+      function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        for(var i=0; i<ca.length; i++) {
+          var c = ca[i];
+          while (c.charAt(0)==' ') c = c.substring(1);
+          if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+          }
+        }
+        return "";
+      }
+
+      function breakUpURLParameters(url) {
+        var link = document.createElement('a');
+        link.setAttribute('href', url);
+        console.log("path variable is " + url);
+
+        return {
+          host:     link.hostname, 
+          port:     link.port,    
+          search:   mapMaker(link.search),
+          path:     link.pathname, 
+          protocol: link.protocol 
+        }
+      }
+      
+      function mapMaker(search, preserveDuplicates) { 
+        preserveDuplicates = preserveDuplicates || false;
+        var outputNoDupes = {};
+        var returnableArray = [];
+
+        if(!search) throw new Error('mapMaker: your search input param is misformed?');
+        search = search.split('?')[1];
+        search = search.split('&');
+        returnableArray = search.map(function(keyval){
+          var out = {};
+          keyval = keyval.split('=');
+          out[keyval[0]] = keyval[1];
+          outputNoDupes[keyval[0]] = keyval[1];
+          return out;
+        });
+        return (preserveDuplicates) ? returnableArray : outputNoDupes;
+      }
+    });
+
+
+  </script>
+</head>
+<body>
+  <div id="effectDiv" class="imgDiv">
+    <button id="u">back</button>
+  </div>
+
+</body>
+</html>
