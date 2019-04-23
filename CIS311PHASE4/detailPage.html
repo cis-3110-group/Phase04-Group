@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>details</title>
+    <link href="PHASE4.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+</head>
+<body>
+    <script>
+   //searches for a string and returns the matching pair of the URL
+   function getQueryVariable(variable) {
+            var query = window.location.search.substring(1);
+            var vars = query.split("&");
+            for (var i=0; i<vars.length; i++) {
+                var pair = vars[i].split("=");
+                if(pair[0] == variable) {
+                    pair[1] = pair[1].replace(/%20/g, " ");
+                    return pair[1];
+                }
+            }
+            return(false);
+        };
+        
+        var Title = getQueryVariable("Title");
+        console.log(Title);
+
+        var Caption = getQueryVariable("Caption");
+        console.log(Caption);
+
+        var Image = getQueryVariable("img");
+        Image += ".jpg";
+        console.log(Image);
+
+        var Picture = document.createElement("img");
+        Picture.setAttribute("src", Image);
+        
+        var Car = document.createElement("p");
+        Car.innerText = Caption;
+
+        var Vehicle = document.createElement("p");
+        Vehicle.innerText = Title;
+
+        Picture.setAttribute("class", "Image");
+
+        document.body.appendChild(Vehicle);
+        
+        document.body.appendChild(Picture);
+
+        document.body.appendChild(Car);
+
+
+
+    
+        
+         </script>
+<p></p>
+</body>
+</html>

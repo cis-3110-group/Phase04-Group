@@ -1,0 +1,29 @@
+.Box{
+    width: 80%;
+    height: 250px;
+    padding: 5px;
+}
+.Image{
+    width: 100%;
+    height: auto;
+    
+}
+.Grid{
+    border-radius: 3px;
+    padding: 20px;
+    margin: 3px;
+    border: 3px;
+    background-color: purple;
+
+}
+.Hold{
+    display: grid;
+    grid-gap: 3px;
+    grid-template-columns: 33% 33% 33%;
+}
+.testBtn{
+    background-color: red;
+}
+.favorite {
+    background-color: brown;
+}

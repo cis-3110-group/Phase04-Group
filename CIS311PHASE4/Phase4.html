@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Gabrielle La Madrid</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-dT8WZNLW+WmnMquYY8GD+px5+PPMy/Rz1pZTBuLQv7EfAZG0xhipTd08JFVCf8bp" crossorigin="anonymous">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js" integrity="sha384-jspctxrQmizRroXAKjoWWOOhkG3aZesspL7dmISSX5+p1LfXftbGQocYmzOsv9wx" crossorigin="anonymous"></script>
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+  <link href="PHASE4.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto+Mono" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <ol class="breadcrumb">
+        <li><a href="#">Home</a></li>
+        <li><a href="CarList.html">Car List</a></li>
+      </ol>
+
+  <div class="jumbotron">
+    <h1>Pick a Car you wish to own!</h1>
+    <p>...</p>
+    <h1><span class="glyphicon glyphicon-road"></span></h1>
+  </div>
+
+      <script>
+          var images = ["1.jpg", "2.jpg", "3.jpg", "4.jpg", "5.jpg", "6.jpg"];
+          console.log(images);
+          var Title = ["Car 1","Car 2","Car 3","Car 4","Car 5","Car 6"];
+          var Caption = ["This car you clicked is now your favorite!","Car 2 is now yours!","Car 3 belongs to you!","Congrats of owning Car 4!","You are the owner of Car 5!","Car 6 is ready to be delivered!"];
+          var url;
+          var ContainMe = document.createElement("div");
+          ContainMe.setAttribute("class","Hold");
+          ContainMe.setAttribute("id","Hold");
+          document.body.appendChild(ContainMe);
+
+
+
+          for (var i=0; i < images.length; i++)
+          {
+              console.log("image in iteration is" + images[i]);
+              url =  images[i];
+              urlTitle = Title[i];
+              urlCaption = Caption[i];
+      
+              
+              var count = i;
+              count++;
+           
+
+          
+        
+             var favorite = document.createElement("button");
+             favorite.innerHTML = "Favorite";
+             favorite.setAttribute("id",i);
+            favorite.addEventListener("click",function(){
+              var jpg = this.id;
+               var Title = document.getElementById("Title"+ jpg);
+               var pTitle = Title.textContent;
+               var Caption = document.getElementById("Caption"+ jpg);
+               var pCaption = Caption.textContent;
+               
+              jpg++;
+              setCookie("img"+jpg,images[i],1);
+               
+            var testbtn = document.getElementById("1");
+            this.classList.toggle('testBtn');
+            console.log("this cookie is " + getCookie("img"));
+            //TODO: need to change favorite button to star if cookie is set
+            //TODO: ADD NAVAGATION BAR
+              window.location = "detailPgPhase4.html?" + "img=" + jpg+".jpg" + "&Title=" + pTitle + "&Caption=" + pCaption;
+            });
+
+            
+
+
+             var unfavorite = document.createElement("button");
+             unfavorite.innerHTML = "Unfavorite"
+             unfavorite.setAttribute ("id", i);
+             unfavorite.addEventListener("click",function(){
+              var remove = this.id;
+               
+              remove++;
+               
+
+              setCookie("img" + remove,remove +".jpg", -1);
+              location.reload();
+            });
+
+
+
+
+              urlOfDetailPage ="detailPgPhase3.html?" + "img=" + url + "&Title=" + urlTitle + "&Caption=" + urlCaption;
+              var imgDiv = document.createElement("div");
+              var imgInDiv = document.createElement("img");
+              var CaptioninDiv = document.createElement("p");
+              CaptioninDiv.setAttribute("id", "Caption" + i);
+
+              var TitleinDiv = document.createElement("p");
+              TitleinDiv.setAttribute("id", "Title" + i);
+             //imgInDiv.setAttribute ("class", "Box");
+             CaptioninDiv.innerHTML = Caption [i];
+             imgDiv.setAttribute("class","Grid");
+             imgDiv.setAttribute("id","holder"+i);    
+              TitleinDiv.innerHTML = Title [i];
+              imgInDiv.setAttribute("class", "Image");
+              imgInDiv.setAttribute("src", url); 
+
+              var link = document.createElement("a");
+
+              link.setAttribute("href", urlOfDetailPage); 
+              imgDiv.appendChild(link);
+              link.appendChild(imgInDiv);
+              imgDiv.appendChild(TitleinDiv);
+              imgDiv.appendChild(CaptioninDiv);
+            
+            if (getCookie("img"+ (i+1))){
+            var favIcon = document.createElement("i");
+            favIcon.setAttribute("class","fas fa-thumbs-up");
+            imgDiv.appendChild(favIcon);
+            }else {
+              imgDiv.appendChild(favorite);
+            }
+             imgDiv.appendChild(unfavorite);
+             ContainMe.appendChild(imgDiv);
+
+             if (getCookie("img"+(i+1))){
+              console.log("this is 1" + getCookie("img"+(i+1)));
+              var favoriteCheck = document.getElementById("holder"+i);
+              favoriteCheck.classList.add("favorite");
+            }
+
+
+              }
+    
+              function setCookie(cname,cvalue,exdays) {
+              var d = new Date();
+              d.setTime(d.getTime() + (exdays*24*60*60*1000));
+              var expires = "expires=" + d.toGMTString();
+              document.cookie = cname+"="+cvalue+"; "+expires;
+              }
+
+                function getCookie(cname) {
+                var name = cname + "=";
+                var ca = document.cookie.split(';');
+                for(var i=0; i<ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0)==' ') c = c.substring(1);
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+                }
+
+                function checkCookie() {
+                var user=getCookie("username");
+                if (user != "") {
+                    alert("Welcome again " + user);
+                } else {
+                  user = prompt("Please enter your name:","");
+                  if (user != "" && user != null) {
+                      setCookie("username", user, 30);
+                  }
+                }
+                }
+
+      </script>
+   
+</body>
+
+</html>
